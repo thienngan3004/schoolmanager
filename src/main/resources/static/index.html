@@ -124,8 +124,9 @@
                 <table class="table table-hover text-nowrap mb-0">
                   <thead>
                     <tr>
-                      <th style="width: 40%">Tên</th>
-                      <th style="width: 40%">Email</th>
+                      <th style="width: 30%">ID</th>
+                      <th style="width: 20%">Tên</th>
+                      <th style="width: 30%">Email</th>
                       <th style="width: 20%" class="text-end">Hành động</th>
                     </tr>
                   </thead>
@@ -191,7 +192,7 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        const API_BASE = '/api/students';
+        const API_BASE = 'http://localhost:8080/api/students';
         const PAGE_SIZE = 5;
 
         let currentPage = 0; // 0-based theo backend
@@ -227,38 +228,50 @@
 
         function renderTable(students) {
           const term = searchInput.value.trim();
+        
           tableBody.innerHTML = students
             .map(function (s) {
               return (
                 '<tr>' +
+        
+                '<td>' +
+                (s.id ? s.id : '') +
+                '</td>' +
+        
                 '<td>' +
                 highlightText(s.name || '', term) +
                 '</td>' +
+        
                 '<td>' +
                 highlightText(s.email || '', term) +
                 '</td>' +
+        
                 '<td class="text-end">' +
+        
                 '<button class="btn btn-sm btn-outline-secondary me-1" data-id="' +
                 s.id +
                 '" data-action="edit">' +
                 '<i class="bi bi-pencil"></i>' +
                 '</button>' +
+        
                 '<button class="btn btn-sm btn-outline-danger" data-id="' +
                 s.id +
                 '" data-action="delete">' +
                 '<i class="bi bi-trash"></i>' +
                 '</button>' +
+        
                 '</td>' +
                 '</tr>'
               );
             })
             .join('');
-
+        
           const from = totalElements === 0 ? 0 : currentPage * PAGE_SIZE + 1;
           const to = Math.min((currentPage + 1) * PAGE_SIZE, totalElements);
+        
           paginationInfo.textContent =
             'Hiển thị ' + from + '-' + to + ' trên tổng ' + totalElements + ' sinh viên';
-
+        
           renderPagination();
         }
 
